@@ -1,0 +1,49 @@
+From 989ac4e9f4d93aa22463e48d224cd5033e713417 Mon Sep 17 00:00:00 2001
+From: Michael Huang <hong.huang@senecacollege.ca>
+Date: Fri, 26 Feb 2016 13:11:36 -0500
+Subject: [PATCH] Added aarch64_ilp32 target to the config.guess and config.sub
+
+---
+ scripts/config.guess | 3 +++
+ scripts/config.sub   | 4 ++--
+ 2 files changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/scripts/config.guess b/scripts/config.guess
+index 1f5c50c..3d9c1a4 100755
+--- a/scripts/config.guess
++++ b/scripts/config.guess
+@@ -886,6 +886,9 @@ EOF
+     aarch64:Linux:*:*)
+ 	echo ${UNAME_MACHINE}-unknown-linux-${LIBC}
+ 	exit ;;
++    aarch64_ilp32:Linux:*:*)
++	echo ${UNAME_MACHINE}-linux-${LIBC}
++	exit ;;
+     aarch64_be:Linux:*:*)
+ 	UNAME_MACHINE=aarch64_be
+ 	echo ${UNAME_MACHINE}-unknown-linux-${LIBC}
+diff --git a/scripts/config.sub b/scripts/config.sub
+index d654d03..a93c86b 100755
+--- a/scripts/config.sub
++++ b/scripts/config.sub
+@@ -248,7 +248,7 @@ case $basic_machine in
+ 	# Some are omitted here because they have special meanings below.
+ 	1750a | 580 \
+ 	| a29k \
+-	| aarch64 | aarch64_be \
++	| aarch64 | aarch64_ilp32 | aarch64_be \
+ 	| alpha | alphaev[4-8] | alphaev56 | alphaev6[78] | alphapca5[67] \
+ 	| alpha64 | alpha64ev[4-8] | alpha64ev56 | alpha64ev6[78] | alpha64pca5[67] \
+ 	| am33_2.0 \
+@@ -365,7 +365,7 @@ case $basic_machine in
+ 	# Recognize the basic CPU types with company name.
+ 	580-* \
+ 	| a29k-* \
+-	| aarch64-* | aarch64_be-* \
++	| aarch64-* | aarch64_ilp32-* | aarch64_be-* \
+ 	| alpha-* | alphaev[4-8]-* | alphaev56-* | alphaev6[78]-* \
+ 	| alpha64-* | alpha64ev[4-8]-* | alpha64ev56-* | alpha64ev6[78]-* \
+ 	| alphapca5[67]-* | alpha64pca5[67]-* | arc-* | arceb-* \
+-- 
+2.5.0
+

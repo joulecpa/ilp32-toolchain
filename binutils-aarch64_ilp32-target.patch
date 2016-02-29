@@ -1,0 +1,103 @@
+From 3822e2978c0d57ea16fdf46147a57e7224476073 Mon Sep 17 00:00:00 2001
+From: Michael Huang <hong.huang@senecacollege.ca>
+Date: Fri, 26 Feb 2016 11:09:41 -0500
+Subject: [PATCH] Added aarch64_ilp32 target to binutils config.sub,
+ config.guess as well as to bfd, gas and ld
+
+---
+ bfd/config.bfd    | 5 +++++
+ config.guess      | 3 +++
+ config.sub        | 4 ++--
+ gas/configure.tgt | 2 ++
+ ld/configure.tgt  | 3 +++
+ 5 files changed, 15 insertions(+), 2 deletions(-)
+
+diff --git a/bfd/config.bfd b/bfd/config.bfd
+index 23da321..59f495c 100644
+--- a/bfd/config.bfd
++++ b/bfd/config.bfd
+@@ -201,6 +201,11 @@ case "${targ}" in
+     targ_selvecs="aarch64_elf64_be_vec aarch64_elf32_le_vec aarch64_elf32_be_vec arm_elf32_le_vec arm_elf32_be_vec"
+     want64=true
+     ;;
++  aarch64_ilp32-*-linux*)
++    targ_defvec=aarch64_elf64_le_vec
++    targ_selvecs="aarch64_elf64_be_vec aarch64_elf32_le_vec aarch64_elf32_be_vec arm_elf32_le_vec arm_elf32_be_vec"
++    want64=true
++    ;;
+   aarch64_be-*-linux*)
+     targ_defvec=aarch64_elf64_be_vec
+     targ_selvecs="aarch64_elf64_le_vec aarch64_elf32_le_vec aarch64_elf32_be_vec arm_elf32_be_vec arm_elf32_le_vec"
+diff --git a/config.guess b/config.guess
+index 802e5f1..3084441 100755
+--- a/config.guess
++++ b/config.guess
+@@ -904,6 +904,9 @@ EOF
+     aarch64:Linux:*:*)
+ 	echo ${UNAME_MACHINE}-unknown-linux-${LIBC}
+ 	exit ;;
++    aarch64_ilp32:Linux:*:*)
++	echo ${UNAME_MACHINE}-linux-${LIBC}
++	exit ;;
+     aarch64_be:Linux:*:*)
+ 	UNAME_MACHINE=aarch64_be
+ 	echo ${UNAME_MACHINE}-unknown-linux-${LIBC}
+diff --git a/config.sub b/config.sub
+index fae826a..5bcc6d8 100755
+--- a/config.sub
++++ b/config.sub
+@@ -247,7 +247,7 @@ case $basic_machine in
+ 	# Some are omitted here because they have special meanings below.
+ 	1750a | 580 \
+ 	| a29k \
+-	| aarch64 | aarch64_be \
++	| aarch64 | aarch64_ilp32 | aarch64_be \
+ 	| alpha | alphaev[4-8] | alphaev56 | alphaev6[78] | alphapca5[67] \
+ 	| alpha64 | alpha64ev[4-8] | alpha64ev56 | alpha64ev6[78] | alpha64pca5[67] \
+ 	| am33_2.0 \
+@@ -370,7 +370,7 @@ case $basic_machine in
+ 	# Recognize the basic CPU types with company name.
+ 	580-* \
+ 	| a29k-* \
+-	| aarch64-* | aarch64_be-* \
++	| aarch64-* | aarch64_ilp32-* | aarch64_be-* \
+ 	| alpha-* | alphaev[4-8]-* | alphaev56-* | alphaev6[78]-* \
+ 	| alpha64-* | alpha64ev[4-8]-* | alpha64ev56-* | alpha64ev6[78]-* \
+ 	| alphapca5[67]-* | alpha64pca5[67]-* | arc-* | arceb-* \
+diff --git a/gas/configure.tgt b/gas/configure.tgt
+index 5ba5700..e100154 100644
+--- a/gas/configure.tgt
++++ b/gas/configure.tgt
+@@ -47,6 +47,7 @@ eval `echo $targ | sed 's/^\([^-]*\)-\([^-]*\)-\(.*\)$/cpu=\1 vendor=\2 os=\3/'`
+ # Note: This table is alpha-sorted, please try to keep it that way.
+ case ${cpu} in
+   aarch64)		cpu_type=aarch64 endian=little ;;
++  aarch64_ilp32)		cpu_type=aarch64 endian=little ;;
+   aarch64_be)		cpu_type=aarch64 endian=big ;;
+   alpha*)		cpu_type=alpha ;;
+   am33_2.0)		cpu_type=mn10300 endian=little ;;
+@@ -122,6 +123,7 @@ generic_target=${cpu_type}-$vendor-$os
+ case ${generic_target} in
+   aarch64*-*-elf)			fmt=elf;;
+   aarch64*-*-linux*)			fmt=elf em=linux ;;
++  aarch64_ilp32*-*-linux*)			fmt=elf em=linux ;;
+ 
+   alpha-*-*vms*)			fmt=evax ;;
+   alpha-*-osf*)				fmt=ecoff ;;
+diff --git a/ld/configure.tgt b/ld/configure.tgt
+index 267138b..c5044a1 100644
+--- a/ld/configure.tgt
++++ b/ld/configure.tgt
+@@ -59,6 +59,9 @@ aarch64_be-*-linux*)	targ_emul=aarch64linuxb
+ aarch64-*-linux*)	targ_emul=aarch64linux
+ 			targ_extra_libpath="aarch64linuxb aarch64linux32 aarch64linux32b armelfb_linux_eabi armelf_linux_eabi"
+ 			targ_extra_emuls="aarch64elf aarch64elf32 aarch64elf32b aarch64elfb armelf armelfb $targ_extra_libpath" ;;
++aarch64_ilp32-*-linux*)	targ_emul=aarch64linux
++			targ_extra_libpath="aarch64linuxb aarch64linux32 aarch64linux32b armelfb_linux_eabi armelf_linux_eabi"
++			targ_extra_emuls="aarch64elf aarch64elf32 aarch64elf32b aarch64elfb armelf armelfb $targ_extra_libpath" ;;
+ alpha*-*-freebsd* | alpha*-*-kfreebsd*-gnu)
+ 		        targ_emul=elf64alpha_fbsd
+ 			targ_extra_emuls="elf64alpha alpha"
+-- 
+2.5.0
+
