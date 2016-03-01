@@ -41,22 +41,14 @@ PMAKE=-j10
 B_LP64=build-lp64
 B_ILP32=build-ilp32
 
+# Set up build directories
+mkdir ${B_LP64}-{binutils-gdb,gcc,glibc}
+mkdir ${B_ILP32}-{binutils-gdb,gcc,glibc}
+
 export PATH=${INSTALL_PATH_ILP32}/bin:${INSTALL_PATH_LP64}/bin:$PATH
 
 # Grab the necessary dependencies and tools from the LEAP repo
 yum install gcc gcc-c++ bison flex gperf texinfo automake wget
-
-# Create a directory to work in
-mkdir -p build-tools
-cd build-tools
-
-# Download toolchain sources and untar them
-wget http://korea.internal.cdot.systems/ilp32/ilp32.tar.gz
-tar -xvf ilp32.tar.gz
-
-# Set up build directories
-mkdir ${B_LP64}-{binutils-gdb,gcc,glibc}
-mkdir ${B_ILP32}-{binutils-gdb,gcc,glibc}
 
 #--- Start building the LP64 middleman toolchain ---#
 
