@@ -19,7 +19,7 @@ trap 'echo FAILED COMMAND: $previous_command' EXIT
 # Set up the variables
 INSTALL_PATH_LP64=/opt/lp64
 INSTALL_PATH_ILP32=/opt/ilp32
-TARGET_LP64=aarch64-leap-linux-gnu
+TARGET_LP64=aarch64-lp64-linux-gnu
 TARGET_ILP32=aarch64_ilp32-linux-gnu
 GCC_CONFIG_LP64="--enable-languages=c,c++,fortran"
 GCC_CONFIG_ILP32="${GCC_CONFIG_LP64} --with-multilib-list=ilp32"
@@ -60,9 +60,7 @@ make install
 cd ..
 
 # Step 2. Install the kernel header
-cd kernel
-make ARCH=arm64 INSTALL_HDR_PATH=${INSTALL_PATH_LP64}/${TARGET_LP64} headers_install
-cd ..
+cp -r /usr/include ${INSTALL_PATH_ILP64}/${TARGET_ILP64}
 
 # Step 3. Build gcc's compilers only and install them
 cd ${B_LP64}-gcc
@@ -110,10 +108,8 @@ make $PMAKE
 make install
 cd ..
 
-# Step 2. Install the kernel header
-cd kernel
-make ARCH=arm64 INSTALL_HDR_PATH=${INSTALL_PATH_ILP32}/${TARGET_ILP32} headers_install
-cd ..
+# Step 2. Install the kernel headers
+cp -r /usr/include ${INSTALL_PATH_ILP32}/${TARGET_ILP32}
 
 # Step 3. Build gcc's compilers only and install them
 cd ${B_ILP32}-gcc
