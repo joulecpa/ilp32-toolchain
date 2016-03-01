@@ -21,21 +21,20 @@ INSTALL_PATH_LP64=/opt/lp64
 INSTALL_PATH_ILP32=/opt/ilp32
 TARGET_LP64=aarch64-leap-linux-gnu
 TARGET_ILP32=aarch64_ilp32-linux-gnu
-LINUX_ARCH=arm64
 GCC_CONFIG_LP64="--enable-languages=c,c++,fortran"
 GCC_CONFIG_ILP32="${GCC_CONFIG_LP64} --with-multilib-list=ilp32"
 
+GLIBC_COMMON="--disable-multilib --disable-profile --disable-debug \
+              --disable-werror --without-gd --enable-shared \
+              --enable-static-nss --enable-obsolete-rpc libc_cv_forced_unwind=yes"
+
 GLIBC_CONFIG_LP64="--build=$MACHTYPE --host=${TARGET_LP64} --target=${TARGET_LP64} \
                    --with-headers=${INSTALL_PATH_LP64}/${TARGET_LP64}/include/ \
-                   --disable-multilib --disable-profile --disable-debug \
-                   --disable-werror --without-gd --enable-shared \
-                   --enable-static-nss --enable-obsolete-rpc libc_cv_forced_unwind=yes"
+                   ${GLIBC_COMMON}"
 
 GLIBC_CONFIG_ILP32="--build=$MACHTYPE --host=${TARGET_ILP32} --target=${TARGET_ILP32} \
                     --with-headers=${INSTALL_PATH_ILP32}/${TARGET_ILP32}/include/ \ 
-                    --disable-multilib --disable-profile --disable-debug \
-                    --disable-werror --without-gd --enable-shared \
-                    --enable-static-nss --enable-obsolete-rpc libc_cv_forced_unwind=yes"
+                    ${GLIBC_COMMON}"
 PMAKE=-j10
 
 # Build directory prefixes
