@@ -48,7 +48,7 @@ mkdir ${B_ILP32}-{binutils-gdb,gcc,glibc}
 export PATH=${INSTALL_PATH_ILP32}/bin:${INSTALL_PATH_LP64}/bin:$PATH
 
 # Grab the necessary dependencies and tools from the LEAP repo
-yum install gcc gcc-c++ bison flex gperf texinfo automake wget
+yum install gcc gcc-c++ bison flex gperf texinfo automake
 
 #--- Start building the LP64 middleman toolchain ---#
 
@@ -152,3 +152,8 @@ cd ..
 
 trap - EXIT
 echo 'Success!' 
+
+#--- Set up the library paths and create a link to the interpreter ---#
+ln -s ${INSTALL_PATH_ILP32}/${TARGET_ILP32}/lib/ld-2.21.90.so /lib/ld-linux-aarch64_ilp32.so.1
+touch ${INSTALL_PATH_ILP32}/${TARGET_ILP32}/etc/ld.so.conf
+${INSTALL_PATH_ILP32}/${TARGET_ILP32}/sbin/ldconfig
